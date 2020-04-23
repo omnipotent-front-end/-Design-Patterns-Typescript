@@ -1,0 +1,24 @@
+{
+  "name": "design",
+  "version": "1.0.0",
+  "private": true,
+  "description": "设计模式（以Typescript描述）",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brizer/-Design-Patterns-Typescript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brizer/-Design-Patterns-Typescript/issues"
+  },
+  "homepage": "https://github.com/brizer/-Design-Patterns-Typescript#readme"
+}
