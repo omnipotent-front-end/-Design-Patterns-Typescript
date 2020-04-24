@@ -229,6 +229,12 @@ Typescript实现
 [代码参考](/code/abstract-factory/index.ts)
 
 
+Javascript简易实现
+-----
+
+[代码参考](/code/abstract-factory/index.js)
+
+
 应用场景
 ------
 
@@ -291,3 +297,7 @@ console.log(myintf.runTimeParam)//xixi
 参考：
 
 [dependency injection - Is there a pattern for initializing objects created via a DI container - Stack Overflow](https://stackoverflow.com/questions/1943576/is-there-a-pattern-for-initializing-objects-created-via-a-di-container/1945023#1945023)
+
+
+
+
