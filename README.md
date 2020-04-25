@@ -41,3 +41,20 @@
 #### [桥接](docs/description/bridge/index.md)
 
 可将一个大类或一系列紧密相关的类拆分为抽象和实现两个独立的层次结构， 从而能在开发时分别使用
+
+#### [组合](docs/description/composite/index.md)
+
+将对象组合成树状结构， 并且能像使用独立对象一样使用它们
+
+#### [装饰器](docs/description/decorator/index.md)
+
+将对象放入包含行为的特殊封装对象中来为原对象绑定新的行为
+
+#### [外观（门面）](docs/description/facade/index.md)
+
+为程序库、 框架或其他复杂类提供一个简单的接口
+
+
+#### [享元](docs/description/flyweight/index.md)
+
+摒弃了在每个对象中保存所有数据的方式， 通过共享多个对象所共有的相同状态， 让你能在有限的内存容量中载入更多对象。

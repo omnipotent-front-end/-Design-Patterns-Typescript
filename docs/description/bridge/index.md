@@ -232,3 +232,14 @@ Javascript简易实现
 [代码参考](/code/bridge/index.js)
 
 
+应用场景
+------
+
+1、inject的源码分析
+
+[ObjectCreator](https://github.com/FunnyLiu/injection/blob/readsource/src/base/objectCreator.ts#L5)为桥接模式中的“抽象部分”，它管理着由构造函数传入的"实现部分"[definition](https://github.com/FunnyLiu/injection/blob/readsource/src/base/objectCreator.ts#L9)。
+
+有基于ObjectCreator继承的"精确抽象"[https://github.com/FunnyLiu/injection/blob/readsource/src/base/functionDefinition.ts#L15](https://github.com/FunnyLiu/injection/blob/readsource/src/base/functionDefinition.ts#L15)，和调用该精确抽象的“具体实现”[FunctionDefinition](https://github.com/FunnyLiu/injection/blob/readsource/src/base/functionDefinition.ts#L56)。
+
+最后根据不同情况，使用不同的“具体实现”[FunctionDefinition和ObjectDefinition](https://github.com/FunnyLiu/injection/blob/readsource/src/factory/container.ts#L28)
+
