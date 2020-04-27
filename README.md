@@ -88,3 +88,23 @@
 
 允许在不暴露对象实现细节的情况下保存和恢复对象之前的状态。
 
+
+#### [观察者](docs/description/observer/index.md)
+
+允许你定义一种订阅机制， 可在对象事件发生时通知多个 “观察” 该对象的其他对象。
+
+#### [状态](docs/description/state/index.md)
+
+让你能在一个对象的内部状态变化时改变其行为， 使其看上去就像改变了自身所属的类一样。
+
+#### [策略](docs/description/strategy/index.md)
+
+能让你定义一系列算法， 并将每种算法分别放入独立的类中， 以使算法的对象能够相互替换。
+
+#### [模板方法](docs/description/template/index.md)
+
+在超类中定义一个算法的框架， 允许子类在不修改结构的情况下重写算法的特定步骤。
+
+#### [访问者](docs/description/visitor/index.md)
+
+将算法与其所作用的对象隔离开来。

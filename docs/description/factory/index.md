@@ -214,27 +214,24 @@ class Application is
 ---------
 
 *   你可以避免创建者和具体产品之间的紧密耦合。
-*   [单一职责原则](https://refactoringguru.cn/didp/principles/solid-principles/srp)。 你可以将产品创建代码放在程序的单一位置， 从而使得代码更容易维护。
-*   [开闭原则](https://refactoringguru.cn/didp/principles/solid-principles/ocp)。 无需更改现有客户端代码， 你就可以在程序中引入新的产品类型。
+*   单一职责原则。 你可以将产品创建代码放在程序的单一位置， 从而使得代码更容易维护。
+*   开闭原则。 无需更改现有客户端代码， 你就可以在程序中引入新的产品类型。
 
 *   应用工厂方法模式需要引入许多新的子类， 代码可能会因此变得更复杂。 最好的情况是将该模式引入创建者类的现有层次结构中。
 
 与其他模式的关系
 --------
 
-*   在许多设计工作的初期都会使用[工厂方法模式](https://refactoringguru.cn/design-patterns/factory-method) （较为简单， 而且可以更方便地通过子类进行定制）， 随后演化为使用[抽象工厂模式](https://refactoringguru.cn/design-patterns/abstract-factory)、 [原型模式](https://refactoringguru.cn/design-patterns/prototype)或[生成器模式](https://refactoringguru.cn/design-patterns/builder) （更灵活但更加复杂）。
+*   在许多设计工作的初期都会使用工厂方法模式（较为简单， 而且可以更方便地通过子类进行定制）， 随后演化为使用[抽象工厂模式](../abstract-factory/index.md)、 [原型模式](../prototype/index.md)或[生成器模式](../builder/index.md) （更灵活但更加复杂）。
     
-*   [抽象工厂模式](https://refactoringguru.cn/design-patterns/abstract-factory)通常基于一组[工厂方法](https://refactoringguru.cn/design-patterns/factory-method)， 但你也可以使用[原型模式](https://refactoringguru.cn/design-patterns/prototype)来生成这些类的方法。
+*   [抽象工厂模式](../abstract-factory/index.md)通常基于一组工厂方法， 但你也可以使用[原型模式](../prototype/index.md)来生成这些类的方法。
     
-*   你可以同时使用[工厂方法](https://refactoringguru.cn/design-patterns/factory-method)和[迭代器模式](https://refactoringguru.cn/design-patterns/iterator)来让子类集合返回不同类型的迭代器， 并使得迭代器与集合相匹配。
+*   你可以同时使用工厂方法和[迭代器模式](../iterator/index.md)来让子类集合返回不同类型的迭代器， 并使得迭代器与集合相匹配。
     
-*   [原型](https://refactoringguru.cn/design-patterns/prototype)并不基于继承， 因此没有继承的缺点。 另一方面， _原型_需要对被复制对象进行复杂的初始化。 [工厂方法](https://refactoringguru.cn/design-patterns/factory-method)基于继承， 但是它不需要初始化步骤。
+*   [原型](../prototype/index.md)并不基于继承， 因此没有继承的缺点。 另一方面， _原型_需要对被复制对象进行复杂的初始化。 工厂方法基于继承， 但是它不需要初始化步骤。
     
-*   [工厂方法](https://refactoringguru.cn/design-patterns/factory-method)是[模板方法模式](https://refactoringguru.cn/design-patterns/template-method)的一种特殊形式。 同时， _工厂方法_可以作为一个大型_模板方法_中的一个步骤。
+*   工厂方法是[模板方法模式](../template/index.md)的一种特殊形式。 同时， _工厂方法_可以作为一个大型_模板方法_中的一个步骤。
     
-
-[](#menu)[![](https://refactoringguru.cn/images/content-public/logos/logo-new-mobile.png)](https://refactoringguru.cn/)
-
 
 Typescript实现
 -----
