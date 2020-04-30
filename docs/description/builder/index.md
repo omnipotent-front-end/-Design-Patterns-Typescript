@@ -248,7 +248,7 @@ class Pizza {
 
 基本生成器接口中定义了所有可能的制造步骤， 具体生成器将实现这些步骤来制造特定形式的产品。 同时， 主管类将负责管理制造步骤的顺序。
 
-使用生成器构造[组合](https://refactoringguru.cn/design-patterns/composite)树或其他复杂对象。
+使用生成器构造[组合](../composite/index.md)树或其他复杂对象。
 
 生成器模式让你能分步骤构造产品。 你可以延迟执行某些步骤而不会影响最终产品。 你甚至可以递归调用这些步骤， 这在创建对象树时非常方便。
 
@@ -284,15 +284,15 @@ class Pizza {
 与其他模式的关系
 --------
 
-*   在许多设计工作的初期都会使用[工厂方法模式](https://refactoringguru.cn/design-patterns/factory-method) （较为简单， 而且可以更方便地通过子类进行定制）， 随后演化为使用[抽象工厂模式](https://refactoringguru.cn/design-patterns/abstract-factory)、 [原型模式](https://refactoringguru.cn/design-patterns/prototype)或[生成器模式](https://refactoringguru.cn/design-patterns/builder) （更灵活但更加复杂）。
+*   在许多设计工作的初期都会使用[工厂方法模式](../factory/index.md) （较为简单， 而且可以更方便地通过子类进行定制）， 随后演化为使用[抽象工厂模式](../abstract-factory/index.md)、 [原型模式](../prototype/index.md)或生成器模式 （更灵活但更加复杂）。
     
-*   [生成器](https://refactoringguru.cn/design-patterns/builder)重点关注如何分步生成复杂对象。 [抽象工厂](https://refactoringguru.cn/design-patterns/abstract-factory)专门用于生产一系列相关对象。 _抽象工厂_会马上返回产品， _生成器_则允许你在获取产品前执行一些额外构造步骤。
+*   生成器重点关注如何分步生成复杂对象。 抽象工厂专门用于生产一系列相关对象。 _抽象工厂_会马上返回产品， _生成器_则允许你在获取产品前执行一些额外构造步骤。
     
-*   你可以在创建复杂[组合模式](https://refactoringguru.cn/design-patterns/composite)树时使用[生成器](https://refactoringguru.cn/design-patterns/builder)， 因为这可使其构造步骤以递归的方式运行。
+*   你可以在创建复杂组合模式树时使用生成器， 因为这可使其构造步骤以递归的方式运行。
     
-*   你可以结合使用[生成器](https://refactoringguru.cn/design-patterns/builder)和[桥接模式](https://refactoringguru.cn/design-patterns/bridge)： _主管_类负责抽象工作， 各种不同的_生成器_负责_实现_工作。
+*   你可以结合使用生成器和[桥接模式](../bridge/index.md)： _主管_类负责抽象工作， 各种不同的_生成器_负责_实现_工作。
     
-*   [抽象工厂](https://refactoringguru.cn/design-patterns/abstract-factory)、 [生成器](https://refactoringguru.cn/design-patterns/builder)和[原型](https://refactoringguru.cn/design-patterns/prototype)都可以用[单例模式](https://refactoringguru.cn/design-patterns/singleton)来实现。
+*   抽象工厂、生成器和原型都可以用[单例模式](../singleton/index.md)来实现。
 
 
 
@@ -307,3 +307,38 @@ Javascript简易实现
 
 [代码参考](/code/factory/index.js)
 
+
+
+
+应用场景
+------
+
+1、Java中的StringBuilder。
+
+在循环中，每次循环都会创建新的字符串对象，然后扔掉旧的字符串。这样，绝大部分字符串都是临时对象，不但浪费内存，还会影响GC效率。
+
+为了能高效拼接字符串，Java标准库提供了StringBuilder，它是一个可变对象，可以预分配缓冲区，这样，往StringBuilder中新增字符时，不会创建新的临时对象。
+
+参考：
+
+[StringBuilder - 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/1252599548343744/1260471862687712)
+
+
+
+2、vue中的list、form的分布组装
+
+[使用生成器模式组装vue的多功能列表组件](https://github.com/FunnyLiu/vue-list-builder-pattern)。
+
+[使用生成器模式组装vue的表单组件](https://github.com/FunnyLiu/vue-form-builder-pattern)
+
+
+参考：
+
+[Implementing the Builder Pattern in Vue.js: Listings - CodeSandbox](https://codesandbox.io/embed/implementing-the-builder-pattern-in-vuejs-listings-y2p0m8v5zz?fontsize=14&module=%2Fsrc%2FApp.vue&view=editor)
+
+[Implementing the Builder Pattern in Vue.js Part 2: Forms - Markus Oberlehner](https://markus.oberlehner.net/blog/implementing-the-builder-pattern-in-vue-forms/)
+
+
+3、配合proxy，完成生成器模式
+
+[builder-pattern](https://github.com/Vincent-Pang/builder-pattern)，利用js的proxy对象，对对象的key进行get处理，完成生成器模式。

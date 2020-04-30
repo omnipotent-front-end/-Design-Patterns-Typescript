@@ -260,3 +260,238 @@ Javascript简易实现
 由于这个场景只有一个维度，所以只有具体工厂[managedResolverFactory](https://github.com/FunnyLiu/injection/blob/readsource/src/factory/common/managedResolverFactory.ts#L296)来包装每一种不同的解析器。
 每一个解析器具有product的基类[BaseManagedResolver](https://github.com/FunnyLiu/injection/blob/readsource/src/factory/common/managedResolverFactory.ts#L34)，而抽象product为[IManagedResolver](https://github.com/FunnyLiu/injection/blob/readsource/src/interfaces.ts#L154)。
 该具体工厂对外暴露使用是通过create来完成 , 参见[applicationContext](https://github.com/FunnyLiu/injection/blob/readsource/src/factory/applicationContext.ts#L148)
+
+
+2、react多个组件的组装
+
+一个普通的多组件策略：
+
+``` javascript
+function A() {
+  console.log("Rendered A");
+  return <div>A</div>;
+}
+
+function B() {
+  console.log("Rendered B");
+  return <div>B</div>;
+}
+
+function C() {
+  console.log("Rendered C");
+  return <div>C</div>;
+}
+
+export default function App() {
+  const cards = [
+    {
+      name: "shadid",
+      type: "A"
+    },
+    {
+      name: "shadid",
+      type: "C"
+    },
+    {
+      name: "shadid",
+      type: "B"
+    },
+    {
+      name: "shadid",
+      type: "A"
+    }
+    // .... more of these card objects
+  ];
+  return (
+      <div>
+        {cards.map(card => {
+          switch (card.type) {
+            case "A":
+              return <A />;
+            case 'B':
+              return <B />;
+            case 'C':
+              return <C />;
+            default:
+              return null;
+          }
+        })}
+     </div>
+  )
+}
+```
+
+可以通过一个工厂来拼接组件。
+
+优化后的逻辑为：
+
+``` javascript
+function A() {
+  console.log("Rendered A");
+  return <div>A</div>;
+}
+
+function B() {
+  console.log("Rendered B");
+  return <div>B</div>;
+}
+
+function C() {
+  console.log("Rendered C");
+  return <div>C</div>;
+}
+function Factory(props) {
+  switch (props.component.type) {
+    case "A":
+      return <A />;
+    case "B":
+      return <B />;
+    case "C":
+      return <C />;
+    default:
+      return <div>Reload...</div>;
+  }
+}
+export default function App() {
+  const cards = [
+    {
+      name: "shadid",
+      type: "A"
+    },
+    {
+      name: "shadid",
+      type: "C"
+    },
+    {
+      name: "shadid",
+      type: "B"
+    },
+    {
+      name: "shadid",
+      type: "A"
+    }
+    // .... more of these card objects
+  ];
+  const [count, setCount] = React.useState(0);
+  const doStuff = () => {
+    setCount(count + 1);
+    console.log(" Click ---> ");
+  };
+  return (
+    <div>
+      {cards.map(card => (
+        <Factory component={card} />
+      ))}
+      <button onClick={doStuff}>Click me</button>
+    </div>
+  );
+}
+```
+
+参考：
+
+[React.js with Factory Pattern ? Building Complex UI With Ease - DEV Community 👩‍💻👨‍💻](https://dev.to/shadid12/react-js-with-factory-pattern-building-complex-ui-with-ease-1ojf)
+
+
+3、react部分公共逻辑的抽取组装
+
+
+``` javascript
+//其中一个产品
+const CounterUi = ({value, increment, decrement}) => (
+  <div>
+    <p>
+      Counter : {value}
+    </p>
+    <div>
+      <button onClick={increment}>+</button>
+      <button onClick={decrement}>-</button>
+    </div>
+  </div>
+);
+// 公共逻辑部分抽取
+function componentFactory(component) {
+  return class Counter extends React.Component{
+    constructor(props) {
+      super(props);
+      this.state = {
+        value: 0
+      };
+    }
+    
+    add(n) {
+      this.setState({
+        value: this.state.value + n
+      })
+    }
+  
+    render(){
+      return React.createElement(
+        component,{
+          value: this.state.value,
+          increment: () => this.add(1),
+          decrement: () => this.add(-1)
+        })
+    }
+  }
+}
+
+const App = () => {
+  const Counter = componentFactory(CounterUi);
+  return <Counter/>
+}
+
+```
+
+
+4、node模块导出并初始化，参考express
+
+express就是如此，[对外暴露模块，通过工厂方法](https://github.com/FunnyLiu/express/blob/readsource/lib/express.js#L36)
+
+``` javascript
+/**
+ * Expose `createApplication()`.
+ */
+exports = module.exports = createApplication;
+function createApplication() {
+  var app = function(req, res, next) {
+    app.handle(req, res, next);
+  };
+  ...
+  return app;
+}
+```
+
+``` javascript
+import express from 'express';
+..
+const app = express();
+```
+
+
+参考：
+
+[Design Patterns in Express.js - DZone Web Dev](https://dzone.com/articles/design-patterns-in-expressjs)
+
+5、框架提供可以拓展自身的方法，如angular、vue
+
+angular有[ComponentFactory](https://angular.io/api/core/ComponentFactory)来给定类型的组件实例化工厂，
+
+vue也提供component方法:
+
+``` javascript
+Vue.component('async-example', function (resolve, reject) {
+  setTimeout(function () {
+    // 向 `resolve` 回调传递组件定义
+    resolve({
+      template: '<div>I am async!</div>'
+    })
+  }, 1000)
+})
+```
+
+
+参考：
+
+[Here is what you need to know about dynamic components in Angular - Angular inDepth](https://indepth.dev/here-is-what-you-need-to-know-about-dynamic-components-in-angular/)
+

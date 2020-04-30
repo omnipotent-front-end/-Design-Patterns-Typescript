@@ -165,4 +165,16 @@ Javascript简易实现
 
 [代码参考](/code/singleton/index.js)
 
+应用场景
+------
 
+1、node模块中的单例
+
+利用require时[会去读取module的cache](https://github.com/FunnyLiu/node/blob/readsource/lib/internal/modules/cjs/loader.js#L915)这一流程，来实现了以模块出口为class实例的单例模式。
+require具体流程可以参考[require时到底发生了什么](https://github.com/FunnyLiu/node/tree/readsource#libinternalmodulescjsloaderjs)。
+
+``` js
+  class A {
+  }
+  module.exports = new A();
+```

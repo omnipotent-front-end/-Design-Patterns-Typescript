@@ -209,17 +209,17 @@ class ApplicationConfigurator is
 与其他模式的关系
 --------
 
-*   在许多设计工作的初期都会使用工厂方法模式 （较为简单， 而且可以更方便地通过子类进行定制）， 随后演化为使用抽象工厂模式、 原型模式或生成器模式 （更灵活但更加复杂）。
+*   在许多设计工作的初期都会使用[工厂方法](../factory/index.md)模式 （较为简单， 而且可以更方便地通过子类进行定制）， 随后演化为使用抽象工厂模式、 [原型模式](../prototype/index.md)或[生成器模式](../builder/index.md) （更灵活但更加复杂）。
     
 *   生成器重点关注如何分步生成复杂对象。 抽象工厂专门用于生产一系列相关对象。 _抽象工厂_会马上返回产品， _生成器_则允许你在获取产品前执行一些额外构造步骤。
     
 *   抽象工厂模式通常基于一组工厂方法， 但你也可以使用原型模式来生成这些类的方法。
     
-*   当只需对客户端代码隐藏子系统创建对象的方式时， 你可以使用抽象工厂来代替外观模式。
+*   当只需对客户端代码隐藏子系统创建对象的方式时， 你可以使用抽象工厂来代替[外观模式](../facade/index.md)。
     
-*   你可以将抽象工厂和桥接模式搭配使用。 如果由_桥接_定义的抽象只能与特定实现合作， 这一模式搭配就非常有用。 在这种情况下， _抽象工厂_可以对这些关系进行封装， 并且对客户端代码隐藏其复杂性。
+*   你可以将抽象工厂和[桥接模式](../bridge/index.md)搭配使用。 如果由_桥接_定义的抽象只能与特定实现合作， 这一模式搭配就非常有用。 在这种情况下， _抽象工厂_可以对这些关系进行封装， 并且对客户端代码隐藏其复杂性。
     
-*   抽象工厂、 生成器和原型都可以用单例模式来实现。
+*   抽象工厂、 生成器和原型都可以用[单例模式](../singleton/index.md)来实现。
 
 Typescript实现
 -----
@@ -298,6 +298,113 @@ console.log(myintf.runTimeParam)//xixi
 
 [dependency injection - Is there a pattern for initializing objects created via a DI container - Stack Overflow](https://stackoverflow.com/questions/1943576/is-there-a-pattern-for-initializing-objects-created-via-a-di-container/1945023#1945023)
 
+2、Angular的$injector来动态注入工厂
+
+当组件需要依赖多个service时，通过构造函数传入并通过类型判断初始化，是一种丑陋的实现：
+
+``` javascript
+@Component({
+  . . .
+})
+export class GenericComponent implements OnInit {
+  public resource: any;
+  constructor(
+    private service1: Service1,
+    private service2: Service2,
+    // Rest of services
+    . . .
+  ) {}
+  ngOnInit() {
+    // Get parameter to resolve Service to use
+    const serviceType = this.route.snapshot.data['type'];
+    
+    // Resolve service to use
+    if (serviceType === 'SERV1') {
+      this.foods = this.service1.get();
+    }
+    if (serviceType === 'SERV2') {
+      this.foods = this.service1.get();
+    }
+    // Everything else
+    . . .
+  }
+}
+```
+
+可以使用抽象工厂：
+
+``` javascript
+// food.ts
+import { PastaService } from './pasta.service';
+import { PizzaService } from './pizza.service';
+// AbstractFactoryInterface
+export interface Food {
+  get(): Observable<any>;
+}
+// AbstractFactoryProvider as a HashMap
+export const foodMap = new Map([
+  ['PASTA', PastaService],
+  ['PIZZA', PizzaService]
+]);
+
+```
+
+以及具体工厂：
+
+``` javascript
+// pasta.service.ts
+import { Injectable } from '@angular/core';
+import { Food } from './food.interface';
+. . .
+// ConcreteFactory
+@Injectable()
+export class PastaService implements Food {
+  constructor() {}
+  public get(): Observable<any> {
+    return Observable.of([
+      {
+        name: 'Carbonara'
+      },
+      {
+        name: 'Pesto'
+      }
+    ])
+  }
+}
+```
+
+再去使用：
+
+``` javascript
+// generic.component.ts
+import { Component, OnInit, Injector, Input } from '@angular/core';
+import { foodMap } from './food.interface';
+@Component({
+  selector: 'generic-food',
+  templateUrl: './app.component.html',
+  styleUrls: [ './app.component.css' ]
+})
+export class GenericFoodComponent implements OnInit {
+  @Input() type: string; // 'PASTA' or 'PIZZA'
+  public foods: Array<any>;
+  public service: any;
+  
+  constructor(private injector: Injector) {}
+  ngOnInit() {
+    // Resolve AbstractFactory
+    const injectable = foodMap.get(this.type);
+    // Inject service
+    this.service = this.injector.get(injectable);
+    // Calling method implemented by Food interface
+    this.service.get().subscribe((foods) => {
+      this.foods = foods;
+    })
+  }
+}
+```
 
 
+参考：
+
+[Angular Tips | Combine Abstract Factory Pattern & Injector to inject a service depends on parameter 👷 📐](https://medium.com/@rjlopezdev/angular-tips-combine-abstract-factory-pattern-injector-to-inject-a-service-depends-on-f0787c6a7390)
 
