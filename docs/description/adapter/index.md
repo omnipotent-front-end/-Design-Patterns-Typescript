@@ -210,3 +210,64 @@ Javascript简易实现
 
 [代码参考](/code/adapter/index.js)
 
+
+
+应用场景
+------
+
+1、第三方组件替换
+
+假设在项目中我们原本使用了Swiper这个组件，后来又有了一个功能更强大，性能更好的滑动组件——NbSwiper。这时我们只需要将Swiper组件进行修改并适配即可，以vue为例：
+
+``` html
+// Swiper.vue
+// 项目原本使用的Swiper组件会被替换掉，我们自己封装一个Swiper组件
+<template>
+  <!-- 进行转换 -->
+  <nb-swiper :prop-x="propX" :prop-yy="propZ" :prop-z="propW" />
+</template>
+<script>
+  export default {
+    props: {
+      // 接受原本Swiper的props和NbSwiper支持的props
+      propX: String,
+      propY: String,
+      propYy: String,
+      propZ: String,
+      propW: String,
+    }
+    ...
+  }
+</script>
+
+```
+
+参考：
+
+[设计模式在vue中的应用（七） - 掘金](https://juejin.im/post/5c6d6b7ce51d457f926d5fee)
+
+2、兼容多平台
+
+axios同时兼容浏览器和node端请求，[如何兼容node和browser环境](https://github.com/FunnyLiu/axios/tree/readsource#%E5%A6%82%E4%BD%95%E5%85%BC%E5%AE%B9node%E5%92%8Cbrowser%E7%8E%AF%E5%A2%83)。
+
+通过适配器兼容node和浏览器端不同请求。
+
+``` javascript
+// axios能同时用于浏览器和node端的原理
+// 区分node和浏览器环境的适配器
+// 适配器模式的运用
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = require('./adapters/xhr');
+  } else if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
+    // For node use HTTP adapter
+    adapter = require('./adapters/http');
+  }
+  return adapter;
+}
+```
+
+参考：[axios 核心源码解读 - 掘金](https://juejin.im/post/5c01126d6fb9a049fd0f9405)
+

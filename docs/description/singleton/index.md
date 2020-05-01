@@ -178,3 +178,32 @@ require具体流程可以参考[require时到底发生了什么](https://github.
   }
   module.exports = new A();
 ```
+
+mongoose的单例就是基于此，参考[mongoose源码](https://github.com/FunnyLiu/mongoose/blob/readsource/lib/index.js#L1114)
+
+
+2、数据状态管理Store全局唯一性
+
+以vuex为例：[vuex的store单例](https://github.com/FunnyLiu/vuex/blob/readsource/src/store.js#L526)，通过更高一层的变量来完成。
+
+``` javascript
+let Vue;
+...
+export function install (_Vue) {
+  // 是否已经执行过了 Vue.use(Vuex)，如果在非生产环境多次执行，则提示错误
+  if (Vue && _Vue === Vue) {
+    ... 
+    // 如果执行过，直接返回即可，不需要再次做初始化
+    return
+  }
+  // 如果是第一次执行 Vue.use(Vuex)，则把传入的 _Vue 赋值给定义的变量 Vue
+  Vue = _Vue
+  // Vuex 初始化逻辑，只会执行一次 applyMixin(Vue)，所以只会有一份唯一的 Store
+  applyMixin(Vue)
+}
+```
+
+3、实现全局唯一的loading
+
+参考elementui中的loading：[element-ui的loading](https://github.com/FunnyLiu/element/blob/readsource/packages/loading/src/index.js#L80), 通过更高一层的变量来完成单例。
+
