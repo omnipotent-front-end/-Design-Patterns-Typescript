@@ -193,25 +193,25 @@ class ImageEditor is
 与其他模式的关系
 --------
 
-*   [桥接模式](https://refactoringguru.cn/design-patterns/bridge)、 [状态模式](https://refactoringguru.cn/design-patterns/state)和[策略模式](https://refactoringguru.cn/design-patterns/strategy) （在某种程度上包括[适配器模式](https://refactoringguru.cn/design-patterns/adapter)） 模式的接口非常相似。 实际上， 它们都基于[组合模式](https://refactoringguru.cn/design-patterns/composite)——即将工作委派给其他对象， 不过也各自解决了不同的问题。 模式并不只是以特定方式组织代码的配方， 你还可以使用它们来和其他开发者讨论模式所解决的问题。
+*   [桥接模式](../bridge/index.md)、 [状态模式](../state/index.md)和[策略模式](../strategy/index.md) （在某种程度上包括[适配器模式]../adapter/index.md)） 模式的接口非常相似。 实际上， 它们都基于组合模式——即将工作委派给其他对象， 不过也各自解决了不同的问题。 模式并不只是以特定方式组织代码的配方， 你还可以使用它们来和其他开发者讨论模式所解决的问题。
     
-*   你可以在创建复杂[组合](https://refactoringguru.cn/design-patterns/composite)树时使用[生成器模式](https://refactoringguru.cn/design-patterns/builder)， 因为这可使其构造步骤以递归的方式运行。
+*   你可以在创建复杂组合树时使用[生成器模式](../builder/index.md)， 因为这可使其构造步骤以递归的方式运行。
     
-*   [责任链模式](https://refactoringguru.cn/design-patterns/chain-of-responsibility)通常和[组合模式](https://refactoringguru.cn/design-patterns/composite)结合使用。 在这种情况下， 叶组件接收到请求后， 可以将请求沿包含全体父组件的链一直传递至对象树的底部。
+*   [责任链模式](../chain/index.md)通常和组合模式结合使用。 在这种情况下， 叶组件接收到请求后， 可以将请求沿包含全体父组件的链一直传递至对象树的底部。
     
-*   你可以使用[迭代器模式](https://refactoringguru.cn/design-patterns/iterator)来遍历[组合](https://refactoringguru.cn/design-patterns/composite)树。
+*   你可以使用[迭代器模式](../iterator/index.md)来遍历组合树。
     
-*   你可以使用[访问者模式](https://refactoringguru.cn/design-patterns/visitor)对整个[组合](https://refactoringguru.cn/design-patterns/composite)树执行操作。
+*   你可以使用[访问者模式](../visitor/index.md)对整个组合树执行操作。
     
-*   你可以使用[享元模式](https://refactoringguru.cn/design-patterns/flyweight)实现[组合](https://refactoringguru.cn/design-patterns/composite)树的共享叶节点以节省内存。
+*   你可以使用[享元模式](../flyweight/index.md)实现组合树的共享叶节点以节省内存。
     
-*   [组合](https://refactoringguru.cn/design-patterns/composite)和[装饰模式](https://refactoringguru.cn/design-patterns/decorator)的结构图很相似， 因为两者都依赖递归组合来组织无限数量的对象。
+*   组合和[装饰模式](../decorator/index.md)的结构图很相似， 因为两者都依赖递归组合来组织无限数量的对象。
     
     _装饰_类似于_组合_， 但其只有一个子组件。 此外还有一个明显不同： _装饰_为被封装对象添加了额外的职责， _组合_仅对其子节点的结果进行了 “求和”。
     
     但是， 模式也可以相互合作： 你可以使用_装饰_来扩展_组合_树中特定对象的行为。
     
-*   大量使用[组合](https://refactoringguru.cn/design-patterns/composite)和[装饰](https://refactoringguru.cn/design-patterns/decorator)的设计通常可从对于[原型模式](https://refactoringguru.cn/design-patterns/prototype)的使用中获益。 你可以通过该模式来复制复杂结构， 而非从零开始重新构造。
+*   大量使用组合和[装饰](../decorator/index.md)的设计通常可从对于[原型模式](../prototype/index.md)的使用中获益。 你可以通过该模式来复制复杂结构， 而非从零开始重新构造。
 
 Typescript实现
 -----
@@ -226,4 +226,11 @@ Javascript简易实现
 
 [代码参考](/code/composite/index.js)
 
+
+应用场景
+-------
+
+1、文件系统
+
+文件夹和文件之间的关系，非常适合用组合模式来描述。文件夹里既可以包含文件，又可以包含其他文件夹，最终可能组合成一棵树。
 

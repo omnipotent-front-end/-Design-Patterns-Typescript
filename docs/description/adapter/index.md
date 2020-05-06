@@ -269,5 +269,57 @@ function getDefaultAdapter() {
 }
 ```
 
-参考：[axios 核心源码解读 - 掘金](https://juejin.im/post/5c01126d6fb9a049fd0f9405)
+参考：
 
+[axios 核心源码解读 - 掘金](https://juejin.im/post/5c01126d6fb9a049fd0f9405)
+
+
+又好比jquery.css方法，在兼容不同平台时，会增加自己对应的属性前缀，具体源码参见[此处](https://github.com/FunnyLiu/jquery/blob/readsource/src/css.js#L276)。
+
+参考：
+
+[jquery中的适配器模式](https://wiki.jikexueyuan.com/project/javascript-design-patterns/adapter-pattern.html)
+
+
+或者是一些orm框架，比如[jugglingdb，使用多个适配器使其与不同的数据库兼容](https://github.com/FunnyLiu/jugglingdb/blob/readsource/lib/schema.js#L84)。
+
+参考：
+
+[node设计模式](https://wizardforcel.gitbooks.io/node-js-design-patterns-second-edition/Chapter6-Design%20Patterns.html)
+
+
+3、node模块方法替换
+
+我们需要复写某个node模块内的一个方法，但是这个模块又不是class，不方便继承。这个时候就可以用适配器模式。
+
+``` javascript
+/*adapter.js*/
+var util = require('util');
+var Target = require('./target.js');
+var Adaptee = require('./adaptee.js');
+function Adapter(){
+  Target.call(this);
+  this.request = function(){//重写原接口
+    var adapteeObj = new Adaptee();//重写的内容
+    adapteeObj.specialRequest();
+  }
+}
+util.inherits(Adapter, Target);//通过继承原模块, 获得原接口
+module.exports = Adapter;
+```
+
+参考：
+
+[nodejs设计模式总结](https://www.jb51.net/article/123011.htm)
+
+
+4、api和ui层之间数据format
+
+在ui和api之间通过adapter来完成数据流的format，再使其adapter可以自由配置，从而完成复用。
+
+![](1.png)
+
+
+参考：
+
+[using-the-adapter-design-pattern-with-react](https://sendgrid.com/blog/using-the-adapter-design-pattern-with-react/)

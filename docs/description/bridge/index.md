@@ -210,13 +210,13 @@ remote = new AdvancedRemoteControl(radio)
 与其他模式的关系
 --------
 
-*   [桥接模式](https://refactoringguru.cn/design-patterns/bridge)通常会于开发前期进行设计， 使你能够将程序的各个部分独立开来以便开发。 另一方面， [适配器模式](https://refactoringguru.cn/design-patterns/adapter)通常在已有程序中使用， 让相互不兼容的类能很好地合作。
+*   桥接模式通常会于开发前期进行设计， 使你能够将程序的各个部分独立开来以便开发。 另一方面， [适配器模式](../adapter/index.md)通常在已有程序中使用， 让相互不兼容的类能很好地合作。
     
-*   [桥接](https://refactoringguru.cn/design-patterns/bridge)、 [状态模式](https://refactoringguru.cn/design-patterns/state)和[策略模式](https://refactoringguru.cn/design-patterns/strategy) （在某种程度上包括[适配器](https://refactoringguru.cn/design-patterns/adapter)） 模式的接口非常相似。 实际上， 它们都基于[组合模式](https://refactoringguru.cn/design-patterns/composite)——即将工作委派给其他对象， 不过也各自解决了不同的问题。 模式并不只是以特定方式组织代码的配方， 你还可以使用它们来和其他开发者讨论模式所解决的问题。
+*   桥接、 [状态模式](../state/index.md)和[策略模式](../strategy/index.md) （在某种程度上包括[适配器](../adapter/index.md)） 模式的接口非常相似。 实际上， 它们都基于[组合模式](../composite/index.md)——即将工作委派给其他对象， 不过也各自解决了不同的问题。 模式并不只是以特定方式组织代码的配方， 你还可以使用它们来和其他开发者讨论模式所解决的问题。
     
-*   你可以将[抽象工厂模式](https://refactoringguru.cn/design-patterns/abstract-factory)和[桥接](https://refactoringguru.cn/design-patterns/bridge)搭配使用。 如果由_桥接_定义的抽象只能与特定实现合作， 这一模式搭配就非常有用。 在这种情况下， _抽象工厂_可以对这些关系进行封装， 并且对客户端代码隐藏其复杂性。
+*   你可以将[抽象工厂模式](../abstract-factory/index.md)和桥接搭配使用。 如果由_桥接_定义的抽象只能与特定实现合作， 这一模式搭配就非常有用。 在这种情况下， _抽象工厂_可以对这些关系进行封装， 并且对客户端代码隐藏其复杂性。
     
-*   你可以结合使用[生成器模式](https://refactoringguru.cn/design-patterns/builder)和[桥接模式](https://refactoringguru.cn/design-patterns/bridge)： _主管_类负责抽象工作， 各种不同的_生成器_负责_实现_工作。
+*   你可以结合使用[生成器模式](../builder/index.md)和桥接模式： _主管_类负责抽象工作， 各种不同的_生成器_负责_实现_工作。
 
 Typescript实现
 -----
@@ -235,11 +235,24 @@ Javascript简易实现
 应用场景
 ------
 
-1、inject的源码分析
+1、使得class易于扩展
+
+参见inject的源码分析
 
 [ObjectCreator](https://github.com/FunnyLiu/injection/blob/readsource/src/base/objectCreator.ts#L5)为桥接模式中的“抽象部分”，它管理着由构造函数传入的"实现部分"[definition](https://github.com/FunnyLiu/injection/blob/readsource/src/base/objectCreator.ts#L9)。
 
 有基于ObjectCreator继承的"精确抽象"[https://github.com/FunnyLiu/injection/blob/readsource/src/base/functionDefinition.ts#L15](https://github.com/FunnyLiu/injection/blob/readsource/src/base/functionDefinition.ts#L15)，和调用该精确抽象的“具体实现”[FunctionDefinition](https://github.com/FunnyLiu/injection/blob/readsource/src/base/functionDefinition.ts#L56)。
 
 最后根据不同情况，使用不同的“具体实现”[FunctionDefinition和ObjectDefinition](https://github.com/FunnyLiu/injection/blob/readsource/src/factory/container.ts#L28)
+
+2、前端ui和交互逻辑分离
+
+将一个基本组件单元分解成3个组件 -- UI组件（展现形式），交互组件（交互逻辑），组件单元（基本单位）。组件单元包含UI组件和交互组件。因此我们就可以通过使用不同的UI组件和交互组件组合的方式来组装出来具有各种不同展现形式，不同交互逻辑的前端组件了。在cms系统里很常见的手段。
+
+![](123.png)
+
+
+参考
+
+[巧用设计模式构建可配置Vue前端应用-活动页生成系统实践](https://juejin.im/post/5be2aa0351882516c3343bbc)
 
