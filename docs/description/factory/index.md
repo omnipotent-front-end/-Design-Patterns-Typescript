@@ -495,3 +495,6 @@ Vue.component('async-example', function (resolve, reject) {
 
 [Here is what you need to know about dynamic components in Angular - Angular inDepth](https://indepth.dev/here-is-what-you-need-to-know-about-dynamic-components-in-angular/)
 
+6、一些内置类
+
+比如Java 中的 Calendar、DateFormat 类。

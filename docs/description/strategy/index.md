@@ -212,3 +212,5 @@ Javascript简易实现
 
 [代码参考](/code/strategy/index.js)
 
+应用场景
+-------

@@ -197,3 +197,8 @@ Javascript简易实现
 
 [代码参考](/code/template/index.js)
 
+
+
+应用场景
+------
+

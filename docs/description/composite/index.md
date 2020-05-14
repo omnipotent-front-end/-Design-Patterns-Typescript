@@ -234,3 +234,5 @@ Javascript简易实现
 
 文件夹和文件之间的关系，非常适合用组合模式来描述。文件夹里既可以包含文件，又可以包含其他文件夹，最终可能组合成一棵树。
 
+前端基于组件框架vue，完成树状组件。可以参考[elementui中el-tree的实现](https://github.com/FunnyLiu/element/blob/readsource/packages/tree/src/tree.vue)
+

@@ -287,7 +287,7 @@ class ApplicationConfigurator is
     
 *   [装饰](https://refactoringguru.cn/design-patterns/decorator)可让你更改对象的外表， [策略模式](https://refactoringguru.cn/design-patterns/strategy)则让你能够改变其本质。
     
-*   [装饰](https://refactoringguru.cn/design-patterns/decorator)和[代理](https://refactoringguru.cn/design-patterns/proxy)有着相似的结构， 但是其意图却非常不同。 这两个模式的构建都基于组合原则， 也就是说一个对象应该将部分工作委派给另一个对象。 两者之间的不同之处在于_代理_通常自行管理其服务对象的生命周期， 而_装饰_的生成则总是由客户端进行控制。
+*   [装饰](https://refactoringguru.cn/design-patterns/decorator)和[代理](https://refactoringguru.cn/design-patterns/proxy)有着相似的结构， 但是其意图却非常不同。 这两个模式的构建都基于组合原则， 也就是说一个对象应该将部分工作委派给另一个对象。 两者之间的不同之处在于**代理通常自行管理其服务对象的生命周期， 而_装饰_的生成则总是由客户端进行控制**。
 
 Typescript实现
 -----

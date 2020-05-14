@@ -207,3 +207,18 @@ export function install (_Vue) {
 
 参考elementui中的loading：[element-ui的loading](https://github.com/FunnyLiu/element/blob/readsource/packages/loading/src/index.js#L80), 通过更高一层的变量来完成单例。
 
+4、处理资源访问冲突
+
+所有的日志都写入到同一个文件中。在不同控制器中，我们分别创 建两个 Logger 对象。在 Web 容器的 Servlet 多线程环境下，如果两个 Servlet 线程同时 分别执行 login() 和 create() 两个函数，并且同时写日志到 log.txt 文件中，那就有可能存 在日志信息互相覆盖的情况。
+
+这个时候就可以对Logger进行单例处理，提供getInstance方法。
+
+5、表示全局唯一类
+
+从业务概念上，如果**有些数据在系统中只应保存一份，那就比较适合设计为单例类**。
+
+比如，配置信息类。在系统中，我们只有一个配置文件，当配置文件被加载到内存之后，以
+对象的形式存在，也理所应当只有一份。
+再比如，唯一递增 ID 号码生成器。
+
+
