@@ -236,3 +236,7 @@ Javascript简易实现
 
 前端基于组件框架vue，完成树状组件。可以参考[elementui中el-tree的实现](https://github.com/FunnyLiu/element/blob/readsource/packages/tree/src/tree.vue)
 
+2、前端组件框架
+
+Vue、React等组件框架都是基于组合模式来构建用户视图组件系统的。
+
