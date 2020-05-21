@@ -302,3 +302,14 @@ Javascript简易实现
 
 [代码参考](/code/decorator/index.js)
 
+应用场景
+------
+
+1、前端装饰器应用场景
+
+Angular/Nest/Mobx 目前均有装饰器提供的基础用法。
+
+至于如何实现装饰器，可以参考[Javascript | 无所不能的前端--十万个为什么](https://omnipotent-front-end.github.io/language/javascript.html#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0-decorator)
+
+
+

@@ -167,15 +167,250 @@ Javascript简易实现
 应用场景
 ------
 
-1、解决易用性
+### 1、解决易用性
 
 门面模式可以用来封装系统的底层实现，隐藏系统的复杂性，提供一组更加简单易用、更高层的接口。比如，Linux 系统调用函数就可以看作一种“门面”。它是 Linux 操作系统暴露给开发者的一组“特殊”的编程接口，它封装了底层更基础的 Linux 内核调用。再比如， Linux 的 Shell 命令，实际上也可以看作一种门面模式的应用。它继续封装系统调用，提供更加友好、简单的命令，让我们可以直接通过执行命令来跟操作系统交互。
 
-2、解决性能问题
+前端各组件库中组件包含子组件，本身也是一种外观模式的应用。
+
+又或者是封装一个简单的API对象，比如说：
+
+``` js
+class API {
+  constructor(authToken) {
+    this.authToken = authToken;
+  }
+  constructHeaders() {
+    const headers = new Headers();
+    headers.set('Authorization', this.authToken);
+    return headers;
+  }
+  handleResponse(response) {
+    if (response.ok) {
+      return response.json();
+    } else {
+      return Promise.reject({
+        status: response.status,
+        statusText: response.statusText
+      });
+    }
+  }
+  get(url, options) {
+    return fetch(url, {
+      headers: this.constructHeaders(),
+      ...options,
+    })
+      .then(this.handleResponse);
+  }
+  post(url, options) {
+    return fetch(url, {
+      method: 'POST',
+      headers: this.constructHeaders(),
+      ...options,
+    })
+      .then(this.handleResponse);
+  }
+  put(url, options) {
+    return fetch(url, {
+      method: 'PUT',
+      headers: this.constructHeaders(),
+      ...options,
+    })
+      .then(this.handleResponse);
+  }
+  delete(url, options) {
+    return fetch(url, {
+      method: 'DELETE',
+      headers: this.constructHeaders(),
+      ...options,
+    })
+      .then(this.handleResponse);
+  }
+}
+```
+
+使用起来就变得很方便：
+
+``` js
+const api = new API('my-auth-token');
+ 
+api.get('https://jsonplaceholder.typicode.com/users/1')
+  .then(data => {
+    console.log('User data', data);
+  })
+  .catch(error => {
+    console.error(error);
+  });
+```
+
+#### 封装React Hooks
+
+外观模式不仅可以用在对象里，也可以用在函数上，比如react的hooks中运用：
+
+比如以下这段代码：
+
+``` js
+import React, { useState } from 'react';
+import AddUserModal from './AddUserModal';
+import UsersTable from './UsersTable';
+ 
+const Users = () => {
+  const [users, setUsers] = useState([]);
+ 
+  const [isAddUserModalOpened, setAddUserModalVisibility] = useState(false);
+ 
+  function openAddUserModal() {
+    setAddUserModalVisibility(true);
+  }
+ 
+  function closeAddUserModal() {
+    setAddUserModalVisibility(false);
+  }
+ 
+  function addUser(user) {
+    setUsers([
+      ...users,
+      user
+    ])
+  }
+ 
+  function deleteUser(userId) {
+    const userIndex = users.findIndex(user => user.id === userId);
+    if (userIndex > -1) {
+      const newUsers = [...users];
+      newUsers.splice(userIndex, 1);
+      setUsers(
+        newUsers
+      );
+    }
+  }
+ 
+  return (
+    <>
+      <button onClick={openAddUserModal}>Add user</button>
+      <UsersTable
+        users={users}
+        onDelete={deleteUser}
+      />
+      <AddUserModal
+        isOpened={isAddUserModalOpened}
+        onClose={closeAddUserModal}
+        onAddUser={addUser}
+      />
+    </>
+  )
+};
+ 
+export default Users;
+```
+
+虽然看起来没什么问题，但是实际上还是可以通过把部分逻辑封装成hooks来进一步简化：
+
+管理user的hooks：
+
+``` js
+function useUsersManagement() {
+  const [users, setUsers] = useState([]);
+ 
+  function addUser(user) {
+    setUsers([
+      ...users,
+      user
+    ])
+  }
+ 
+  function deleteUser(userId) {
+    const userIndex = users.findIndex(user => user.id === userId);
+    if (userIndex > -1) {
+      const newUsers = [...users];
+      newUsers.splice(userIndex, 1);
+      setUsers(
+        newUsers
+      );
+    }
+  }
+ 
+  return {
+    users,
+    addUser,
+    deleteUser
+  }
+}
+```
+
+管理弹框的hooks：
+
+``` js
+function useAddUserModalManagement() {
+  const [isAddUserModalOpened, setAddUserModalVisibility] = useState(false);
+ 
+  function openAddUserModal() {
+    setAddUserModalVisibility(true);
+  }
+ 
+  function closeAddUserModal() {
+    setAddUserModalVisibility(false);
+  }
+  return {
+    isAddUserModalOpened,
+    openAddUserModal,
+    closeAddUserModal
+  }
+}
+```
+
+最后再去调用：
+
+``` js
+import React from 'react';
+import AddUserModal from './AddUserModal';
+import UsersTable from './UsersTable';
+import useUsersManagement from "./useUsersManagement";
+import useAddUserModalManagement from "./useAddUserModalManagement";
+ 
+const Users = () => {
+  const {
+    users,
+    addUser,
+    deleteUser
+  } = useUsersManagement();
+  const {
+    isAddUserModalOpened,
+    openAddUserModal,
+    closeAddUserModal
+  } = useAddUserModalManagement();
+ 
+  return (
+    <>
+      <button onClick={openAddUserModal}>Add user</button>
+      <UsersTable
+        users={users}
+        onDelete={deleteUser}
+      />
+      <AddUserModal
+        isOpened={isAddUserModalOpened}
+        onClose={closeAddUserModal}
+        onAddUser={addUser}
+      />
+    </>
+  )
+};
+ 
+export default Users;
+```
+
+
+参考：
+
+[The Facade pattern and applying it to React Hooks](https://wanago.io/2019/12/09/javascript-design-patterns-facade-react-hooks/)
+
+
+
+### 2、解决性能问题
 
 我们通过将多个接口调用替换为一个门面接口调用，减少网络通信成本，提高 App 客户端的响应速度。
 
-3、解决分布式事务问题
+### 3、解决分布式事务问题
 
 要支持两个接口调用在一个事务中执行，是比较难实现的，这涉及分布式事务问题。虽然我们可以通过引入分布式事务框架或者事后补偿的机制来解决，但代码实现都比较复杂。而最简单的解决方案是，利用数据库事务或者 Spring 框架提供的事务(如果是 Java 语言的 话)，在一个事务中，执行创建用户和创建钱包这两个 SQL 操作。这就要求两个 SQL 操作要在一个接口中完成，所以，我们可以借鉴门面模式的思想，再设计一个包裹这两个操作的新接口，让新接口在一个事务中执行两个 SQL 操作。
 
