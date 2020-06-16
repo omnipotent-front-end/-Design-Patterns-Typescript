@@ -250,4 +250,7 @@ Javascript简易实现
 
 观察者模式的应用场景非常广泛，小到代码层面的解耦，大到架构层面的系统解耦，再或者 一些产品的设计思路，都有这种模式的影子，比如，邮件订阅、RSS Feeds，本质上都是观察者模式。不同的应用场景和需求下，这个模式也有截然不同的实现方式，有同步阻塞的实 现方式，也有异步非阻塞的实现方式;有进程内的实现方式，也有跨进程的实现方式。
 
+### 1、事件通信
+
+前端[事件通信的eventbus](https://github.com/tomato-js/tomato/blob/df6f850/packages/events/src/Events.ts#L14)，和[vue的响应式数据管理系统](https://omnipotent-front-end.github.io/library/vue.html#vue%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%93%8D%E5%BA%94%E5%BC%8F%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84%EF%BC%9F)，都是观察者模式的运用。
 

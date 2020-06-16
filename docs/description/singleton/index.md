@@ -203,9 +203,12 @@ export function install (_Vue) {
 }
 ```
 
-3、实现全局唯一的loading
+3、实现全局唯一的loading或dialog
 
-参考elementui中的loading：[element-ui的loading](https://github.com/FunnyLiu/element/blob/readsource/packages/loading/src/index.js#L80), 通过更高一层的变量来完成单例。
+参考elementui中的loading：[element-ui的loading](https://github.com/FunnyLiu/element/blob/readsource/packages/loading/src/index.js#L80), 或者[elementui中的message-box](https://github.com/FunnyLiu/element/blob/readsource/packages/message-box/src/main.js#L79)，通过更高一层的变量来完成单例。
+
+
+
 
 4、处理资源访问冲突
 

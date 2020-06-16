@@ -235,6 +235,12 @@ Javascript简易实现
 
 如果你熟悉 Java 语言和 Spring 开发框架，这部分工作都是可以在Spring AOP 切面中完 成的。Spring AOP 底层的实现原理就是基于动态代理。
 
+在node端要好几个库做这个事情：[bnoguchi/hooks-js](https://github.com/bnoguchi/hooks-js#readme)、[cujojs/meld](https://github.com/cujojs/meld)。
+
+ES2015规范引入了一个名为Proxy的全局对象，它可以从开始在Node.js v6.0中使用，也是代理模式的应用场景。
+
+Vue3/MobX均是基于Proxy来完成对数据响应式的建设。
+
 2、RPC框架
 
 通过远程代理，将网络通信、数据编解码等细节隐藏起来。客户端在使用 RPC 服务的时候，就像使用本地函数一样，无需了解跟服务器交互的细节。除此之外，RPC 服务的开发者也只需要开发业务逻辑，就像开发本地使用的函数一样，不需要关注跟客户端的交互细节。

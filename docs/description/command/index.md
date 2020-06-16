@@ -340,3 +340,19 @@ Javascript简易实现
 
 [代码参考](/code/command/index.js)
 
+
+应用场景
+-------
+
+
+### 1、数据状态管理
+
+#### redux
+前端库如Redux，其核心就是命令模式运用。[Redux中基本概念](https://omnipotent-front-end.github.io/web/fed.html#redux)中的Store对标命令模式的Receiver。Store 会根据 “reducers” 进行初始化，描述 Store 是如何变化的。这些 reducers 都是一些纯函数，每当被调用的时候都会返回一个新的 state，而不会导致莫名其妙地发生变化。这使得我们的代码具有高度的可预测性以及可测试性。
+
+Redux中的Action对标命令模式中的Commander。Redux中的Dispatch对标命令模式中的Sender。
+
+
+参考：
+
+[【译】Redux 和 命令模式 | 吕立青的博客](https://blog.jimmylv.info/2016-04-19-redux-and-the-command-pattern/)

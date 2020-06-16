@@ -222,13 +222,20 @@ Typescript实现
 
 最流行的用法是促进应用程序的GUI组件之间的通信。中介者的同义词是MVC模式的Controller部分。
 
-[代码参考](/code/proxy/index.ts)
+[代码参考](/code/mediator/index.ts)
 
 
 Javascript简易实现
 -----
 
-[代码参考](/code/proxy/index.js)
+[代码参考](/code/mediator/index.js)
 
+
+应用场景
+------
+
+### 1、数据状态管理
+
+前端常用的event bus抽出来统一管理组件数据，和redux的思路，本质上都是中介者。
 
 
