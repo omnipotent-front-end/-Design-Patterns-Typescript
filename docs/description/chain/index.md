@@ -294,8 +294,7 @@ Servlet Filter 是 Java Servlet 规范中定义的组件，翻译成中文就是
 
 Spring Interceptor拦截器底层也是基于职责链模式实现的。
 
-
-
+著名的前端情况库axios的拦截器也是基于职责链。具体原理参考[axios拦截器原理](https://github.com/FunnyLiu/axios/tree/readsource#%E6%8B%A6%E6%88%AA%E5%99%A8%E7%9B%B8%E5%85%B3%E5%8E%9F%E7%90%86)
 
 
 
