@@ -1,6 +1,6 @@
 # -Design-Patterns-Typescript
 
-设计模式（以Typescript描述）
+设计模式（以Typescript描述）[在线手册](https://omnipotent-front-end.github.io/-Design-Patterns-Typescript/index.html#/)
 
 内容选自[此处](https://refactoringguru.cn/design-patterns/typescript)和[此处](https://github.com/fbeline/design-patterns-JS)，以及一定自己的理解。
 
