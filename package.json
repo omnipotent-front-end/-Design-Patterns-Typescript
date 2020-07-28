@@ -8,6 +8,7 @@
     "doc": "docs"
   },
   "scripts": {
+    "start": "docsify serve docs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/brizer/-Design-Patterns-Typescript/issues"
   },
-  "homepage": "https://github.com/brizer/-Design-Patterns-Typescript#readme"
+  "homepage": "https://github.com/brizer/-Design-Patterns-Typescript#readme",
+  "devDependencies": {
+    "docsify-cli": "^4.4.1"
+  }
 }
