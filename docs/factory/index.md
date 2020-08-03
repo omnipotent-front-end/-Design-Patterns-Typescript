@@ -66,6 +66,11 @@
     注意， 并不一定每次调用工厂方法都会**创建**新的实例。 工厂方法也可以返回缓存、 对象池或其他来源的已有对象。
     
 
+UML
+----
+
+![](Xnip2020-07-31_14-59-06.jpg)
+
 伪代码
 ---
 
@@ -338,7 +343,7 @@ export default BmwFactory;
 ------
 
 
-1、inject库中的解析器工厂
+### inject库中的解析器工厂
 
 选自midway的ioc库之[inject](https://github.com/FunnyLiu/injection/tree/readsource)。
 
@@ -347,7 +352,7 @@ export default BmwFactory;
 该具体工厂对外暴露使用是通过create来完成 , 参见[applicationContext](https://github.com/FunnyLiu/injection/blob/readsource/src/factory/applicationContext.ts#L148)
 
 
-2、react多个组件的组装
+### react多个组件的组装
 
 一个普通的多组件策略：
 
@@ -478,7 +483,7 @@ export default function App() {
 [React.js with Factory Pattern ? Building Complex UI With Ease - DEV Community 👩‍💻👨‍💻](https://dev.to/shadid12/react-js-with-factory-pattern-building-complex-ui-with-ease-1ojf)
 
 
-3、react部分公共逻辑的抽取组装
+### react部分公共逻辑的抽取组装
 
 
 ``` javascript
@@ -529,7 +534,7 @@ const App = () => {
 ```
 
 
-4、node模块导出并初始化，参考express
+### node模块导出并初始化，参考express
 
 express就是如此，[对外暴露模块，通过工厂方法](https://github.com/FunnyLiu/express/blob/readsource/lib/express.js#L36)
 
@@ -558,7 +563,7 @@ const app = express();
 
 [Design Patterns in Express.js - DZone Web Dev](https://dzone.com/articles/design-patterns-in-expressjs)
 
-5、框架提供可以拓展自身的方法，如angular、vue
+### 框架提供可以拓展自身的方法，如angular、vue
 
 angular有[ComponentFactory](https://angular.io/api/core/ComponentFactory)来给定类型的组件实例化工厂，
 
@@ -580,6 +585,6 @@ Vue.component('async-example', function (resolve, reject) {
 
 [Here is what you need to know about dynamic components in Angular - Angular inDepth](https://indepth.dev/here-is-what-you-need-to-know-about-dynamic-components-in-angular/)
 
-6、一些内置类
+### 一些内置类
 
 比如Java 中的 Calendar、DateFormat 类。

@@ -54,7 +54,11 @@
 1.  **单例** （Singleton） 类声明了一个名为 `get­Instance`获取实例的静态方法来返回其所属类的一个相同实例。
     
     单例的构造函数必须对客户端 （Client） 代码隐藏。 调用 `获取实例`方法必须是获取单例对象的唯一方式。
-    
+
+UML 
+---
+
+![](Xnip2020-07-31_15-39-59.jpg)
 
 伪代码
 ---
@@ -224,7 +228,7 @@ export default Person;
 应用场景
 ------
 
-1、node模块中的单例
+### node模块中的单例
 
 利用require时[会去读取module的cache](https://github.com/FunnyLiu/node/blob/readsource/lib/internal/modules/cjs/loader.js#L915)这一流程，来实现了以模块出口为class实例的单例模式。
 require具体流程可以参考[require时到底发生了什么](https://github.com/FunnyLiu/node/tree/readsource#libinternalmodulescjsloaderjs)。
@@ -238,7 +242,7 @@ require具体流程可以参考[require时到底发生了什么](https://github.
 mongoose的单例就是基于此，参考[mongoose源码](https://github.com/FunnyLiu/mongoose/blob/readsource/lib/index.js#L1114)
 
 
-2、数据状态管理Store全局唯一性
+### 数据状态管理Store全局唯一性
 
 以vuex为例：[vuex的store单例](https://github.com/FunnyLiu/vuex/blob/readsource/src/store.js#L526)，通过更高一层的变量来完成。
 
@@ -259,20 +263,20 @@ export function install (_Vue) {
 }
 ```
 
-3、实现全局唯一的loading或dialog
+### 实现全局唯一的loading或dialog
 
 参考elementui中的loading：[element-ui的loading](https://github.com/FunnyLiu/element/blob/readsource/packages/loading/src/index.js#L80), 或者[elementui中的message-box](https://github.com/FunnyLiu/element/blob/readsource/packages/message-box/src/main.js#L79)，通过更高一层的变量来完成单例。
 
 
 
 
-4、处理资源访问冲突
+### 处理资源访问冲突
 
 所有的日志都写入到同一个文件中。在不同控制器中，我们分别创 建两个 Logger 对象。在 Web 容器的 Servlet 多线程环境下，如果两个 Servlet 线程同时 分别执行 login() 和 create() 两个函数，并且同时写日志到 log.txt 文件中，那就有可能存 在日志信息互相覆盖的情况。
 
 这个时候就可以对Logger进行单例处理，提供getInstance方法。
 
-5、表示全局唯一类
+### 表示全局唯一类
 
 从业务概念上，如果**有些数据在系统中只应保存一份，那就比较适合设计为单例类**。
 

@@ -67,6 +67,11 @@
 5.  尽管具体工厂会对具体产品进行初始化， 其构建方法签名必须返回相应的_抽象_产品。 这样， 使用工厂类的客户端代码就不会与工厂创建的特定产品变体耦合。 **客户端** （Client） 只需通过抽象接口调用工厂和产品对象， 就能与任何具体工厂 / 产品变体交互。
     
 
+UML
+---
+
+![](Xnip2020-07-31_15-05-53.jpg)
+
 伪代码
 ---
 
@@ -387,13 +392,13 @@ export default droidProducer;
 应用场景
 ------
 
-抽象工厂是非常重要的依赖注入（DI）设计模式。
+###  抽象工厂是非常重要的依赖注入（DI）设计模式。
 
-1、需要运行时值来构建特定依赖项
+#### 需要运行时值来构建特定依赖项
 
 比如如下场景，想在运行时调用Initialize来定义初始化参数：
 
-``` typescript
+``` javascript
 interface IMyIntf {
   initialize:(runTimeParam:string)=>void;
   runTimeParam: string;
@@ -413,7 +418,7 @@ console.log(myIntf.runTimeParam)//xixi
 
 应该修改为：
 
-``` typescript
+``` javascript
 interface IMyIntf {
   runTimeParam: string;
 }
@@ -447,7 +452,7 @@ console.log(myintf.runTimeParam)//xixi
 
 [dependency injection - Is there a pattern for initializing objects created via a DI container - Stack Overflow](https://stackoverflow.com/questions/1943576/is-there-a-pattern-for-initializing-objects-created-via-a-di-container/1945023#1945023)
 
-2、Angular的$injector来动态注入工厂
+#### Angular的$injector来动态注入工厂
 
 当组件需要依赖多个service时，通过构造函数传入并通过类型判断初始化，是一种丑陋的实现：
 

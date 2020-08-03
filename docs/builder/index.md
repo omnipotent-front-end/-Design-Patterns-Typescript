@@ -76,6 +76,11 @@
 5.  **客户端** （Client） 必须将某个生成器对象与主管类关联。 一般情况下， 你只需通过主管类构造函数的参数进行一次性关联即可。 此后主管类就能使用生成器对象完成后续所有的构造任务。 但在客户端将生成器对象传递给主管类制造方法时还有另一种方式。 在这种情况下， 你在使用主管类生产产品时每次都可以使用不同的生成器。
     
 
+UML
+---
+
+![](Xnip2020-07-31_15-31-57.jpg)
+
 伪代码
 ---
 
@@ -466,7 +471,7 @@ export default RequestBuilder;
 应用场景
 ------
 
-1、Java中的StringBuilder。
+### Java中的StringBuilder。
 
 在循环中，每次循环都会创建新的字符串对象，然后扔掉旧的字符串。这样，绝大部分字符串都是临时对象，不但浪费内存，还会影响GC效率。
 
@@ -478,7 +483,7 @@ export default RequestBuilder;
 
 
 
-2、vue中的list、form的分布组装
+### vue中的list、form的分布组装
 
 [使用生成器模式组装vue的多功能列表组件](https://github.com/FunnyLiu/vue-list-builder-pattern)。
 
@@ -492,6 +497,6 @@ export default RequestBuilder;
 [Implementing the Builder Pattern in Vue.js Part 2: Forms - Markus Oberlehner](https://markus.oberlehner.net/blog/implementing-the-builder-pattern-in-vue-forms/)
 
 
-3、配合proxy，完成生成器模式
+### 配合proxy，完成生成器模式
 
 [builder-pattern](https://github.com/Vincent-Pang/builder-pattern)，利用js的proxy对象，对对象的key进行get处理，完成生成器模式。

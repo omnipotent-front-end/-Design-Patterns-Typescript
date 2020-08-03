@@ -8,7 +8,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "docsify serve docs",
+    "start": "docsify serve docs --index-name=indexLocal.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
