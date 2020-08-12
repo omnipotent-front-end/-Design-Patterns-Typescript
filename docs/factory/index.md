@@ -534,7 +534,7 @@ const App = () => {
 ```
 
 
-### node模块导出并初始化，参考express
+### node模块导出并初始化，参考express和ora
 
 express就是如此，[对外暴露模块，通过工厂方法](https://github.com/FunnyLiu/express/blob/readsource/lib/express.js#L36)
 
@@ -558,6 +558,17 @@ import express from 'express';
 const app = express();
 ```
 
+著名cli加载ui库ora也是如此。[通过工厂初始化class](https://github.com/sindresorhus/ora/blob/v5.0.0/index.js#L334):
+
+``` js
+//通过工厂来new class
+const oraFactory = function (options) {
+	return new Ora(options);
+};
+//对外只暴露工厂，方便调用
+module.exports = oraFactory;
+
+```
 
 参考：
 
