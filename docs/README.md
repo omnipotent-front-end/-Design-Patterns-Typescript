@@ -1,4 +1,3 @@
-# -Design-Patterns-Typescript
 
 设计模式（以Typescript描述）
 
