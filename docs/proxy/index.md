@@ -357,4 +357,114 @@ Vue3/MobX均是基于Proxy来完成对数据响应式的建设。
 代理模式最常用的一个应用场景就是，在业务系统中开发一些非功能性需求，比如:监控、统计、鉴权、限流、事务、幂等、日志。我们将这些附加功能与业务功能解耦，放到代理类中统一处理，让程序员只需要关注业务方面的开发。
 
 
+5、业务逻辑层cache
+
+以cache为例，首先是一个简单的cache类：[简单的cache类](https://github.com/FunnyLiu/vscode-wakatime/blob/readsource/src/cache/memory-storage.ts#L0)：
+
+``` js
+// 一个简单的cache 类
+export class MemoryStorage {
+
+    private memCache: any = {};
+
+    constructor() { }
+
+    public async getItem<T>(key: string): Promise<T> {
+        return this.memCache[key];
+    }
+
+    public async setItem(key: string, content: any): Promise<void> {
+        this.memCache[key] = content;
+    }
+
+    public async clear(): Promise<void> {
+        this.memCache = {};
+    }
+}
+
+```
+
+
+可以看到只是做了简单的get和set，如果需要给其增加过期时间的话，可以通过代理模式来完成，再封装一个[带过期策略的cache类](https://github.com/FunnyLiu/vscode-wakatime/blob/readsource/src/cache/expiration-strategy.ts#L15):
+
+
+``` js
+import { MemoryStorage } from './memory-storage';
+
+interface IExpiringCacheItem {
+    content: any;
+    meta: {
+        createdAt: number;
+        ttl: number;
+    }
+}
+
+interface IOptions {
+    ttl?: number;
+    isLazy?: boolean;
+    isCachedForever?: boolean;
+}
+// 一个带过期时间功能的cache类，对普通的cache类包装了一层进行了代理模式，以及promise的封装
+export class ExpirationStrategy {
+
+    private readonly storage: MemoryStorage;
+
+    constructor(storage: MemoryStorage) {
+        this.storage = storage;
+    }
+
+    public async getItem<T>(key: string): Promise<T> {
+        return new Promise<T>(async (resolve, _) => {
+            const item = await this.storage.getItem<IExpiringCacheItem>(key);
+            if (item && item.meta && item.meta.ttl && this.isItemExpired(item)) {
+                await this.storage.setItem(key, undefined);
+                resolve(undefined);
+            }
+            item ? resolve(item.content) : resolve(undefined);
+        });
+    }
+
+    public async setItem(key: string, content: any, options: IOptions): Promise<void> {
+        options = { ttl: 60, isLazy: true, isCachedForever: false, ...options }
+
+        let meta = {};
+
+        if (!options.isCachedForever) {
+            meta = {
+                ttl: options.ttl! * 1000,
+                createdAt: Date.now()
+            };
+
+            if (!options.isLazy) {
+                setTimeout(() => {
+                    this.unsetKey(key);
+                }, options.ttl!);
+            }
+        }
+        await this.storage.setItem(key, {meta, content});
+    }
+
+    public async clear(): Promise<void> {
+        await this.storage.clear();
+    }
+
+    private isItemExpired(item: IExpiringCacheItem): boolean {
+        return Date.now() > item.meta.createdAt + item.meta.ttl;
+    }
+
+    private async unsetKey(key: string): Promise<void> {
+        await this.storage.setItem(key, undefined);
+    }
+}
+```
+
+然后将第一个cache类作为实例化对象传入即可:
+
+
+``` js
+this.cache = new ExpirationStrategy(new MemoryStorage());
+```
+
+从而完成整个代理过程。
+
 
