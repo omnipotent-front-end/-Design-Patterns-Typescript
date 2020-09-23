@@ -3,7 +3,7 @@
 意图
 --
 
-**工厂方法模式**是一种创建型设计模式， 其**在父类中提供一个创建对象的接口， 允许子类决定实例化对象的类型**。
+**工厂方法模式**是一种创建型设计模式， 其**在父类中提供一个创建对象的接口， 允许子类决定实例化对象的类型**。简单来说，就是将创建实例的任务委托给其他对象。
 
 ![](2020-04-23-11-23-18.png)
 
@@ -599,3 +599,87 @@ Vue.component('async-example', function (resolve, reject) {
 ### 一些内置类
 
 比如Java 中的 Calendar、DateFormat 类。
+
+
+### 根据不同的情况，创建不同的对象
+
+参考[tapable](https://github.com/FunnyLiu/tapable/blob/readsource/lib/HookCodeFactory.js#L13)，
+返回一个class，提供一个create方法来完成新对象的创建。
+
+``` js
+class HookCodeFactory {
+	constructor(config) {
+		this.config = config;
+		this.options = undefined;
+		this._args = undefined;
+	}
+    // 提供一个工厂方法，用来实例化其他对象
+	create(options) {
+		this.init(options);
+		let fn;
+		switch (this.options.type) {
+			case "sync":
+				fn = new Function(
+					this.args(),
+					'"use strict";\n' +
+						this.header() +
+						this.contentWithInterceptors({
+							onError: err => `throw ${err};\n`,
+							onResult: result => `return ${result};\n`,
+							resultReturns: true,
+							onDone: () => "",
+							rethrowIfPossible: true
+						})
+				);
+				break;
+			case "async":
+				fn = new Function(
+					this.args({
+						after: "_callback"
+					}),
+					'"use strict";\n' +
+						this.header() +
+						this.contentWithInterceptors({
+							onError: err => `_callback(${err});\n`,
+							onResult: result => `_callback(null, ${result});\n`,
+							onDone: () => "_callback();\n"
+						})
+				);
+				break;
+			case "promise":
+				let errorHelperUsed = false;
+				const content = this.contentWithInterceptors({
+					onError: err => {
+						errorHelperUsed = true;
+						return `_error(${err});\n`;
+					},
+					onResult: result => `_resolve(${result});\n`,
+					onDone: () => "_resolve();\n"
+				});
+				let code = "";
+				code += '"use strict";\n';
+				code += "return new Promise((_resolve, _reject) => {\n";
+				if (errorHelperUsed) {
+					code += "var _sync = true;\n";
+					code += "function _error(_err) {\n";
+					code += "if(_sync)\n";
+					code += "_resolve(Promise.resolve().then(() => { throw _err; }));\n";
+					code += "else\n";
+					code += "_reject(_err);\n";
+					code += "};\n";
+				}
+				code += this.header();
+				code += content;
+				if (errorHelperUsed) {
+					code += "_sync = false;\n";
+				}
+				code += "});\n";
+				fn = new Function(this.args(), code);
+				break;
+		}
+		this.deinit();
+		return fn;
+	}
+}
+
+```
