@@ -465,6 +465,35 @@ export { ShoppingCart, Discount };
 
 对于支持 UGC(User Generated Content，用户生成内容)的应用(比如论坛)来说， 用户生成的内容(比如，在论坛中发表的帖子)可能会包含一些敏感词(比如涉黄、广告、 反动等词汇)。针对这个应用场景，我们就可以利用职责链模式来过滤这些敏感词，对一种垃圾规则单独指定一个职责，从而在客户端拼接规则。
 
+再比如说处理多个参数的情况。[参考execa](https://github.com/FunnyLiu/execa/blob/readsource/index.js#L102)，针对不同的参数，会分批次对返回的promise逐步增强：
+
+``` js
+	const spawnedPromise = getSpawnedPromise(spawned);
+	// 这里是一个典型的职责链模式
+	// 处理timeout相关的逻辑，
+	const timedPromise = setupTimeout(spawned, parsed.options, spawnedPromise);
+	// 保证清除子进程相关逻辑
+	const processDone = setExitHandler(spawned, parsed.options, timedPromise);
+```
+
+每一方法都去增强promise，比如setExitHandler，保证promise在finally阶段杀死子进程：
+
+``` js
+const setExitHandler = async (spawned, {cleanup, detached}, timedPromise) => {
+	if (!cleanup || detached) {
+		return timedPromise;
+	}
+
+	const removeExitHandler = onExit(() => {
+		spawned.kill();
+	});
+
+	return timedPromise.finally(() => {
+		removeExitHandler();
+	});
+};
+```
+
 2、过滤器，拦截器
 
 Servlet Filter 是 Java Servlet 规范中定义的组件，翻译成中文就是过滤器，它可以实现对 HTTP 请求的过滤功能，比如鉴权、限流、记录日志、验证参数等等。因为它是 Servlet 规范的一部分，所以，只要是支持 Servlet 的 Web 容器(比如，Tomcat、Jetty 等)，都支持过滤器功能。
