@@ -107,6 +107,45 @@ class Application is
 
 ```
 
+单例模式又分懒汉式和饿汉式两种，其区别在于懒汉式在调用的时候创建实例，而饿汉式则是在初始化就创建好实例，具体实现如下：
+
+``` js
+// 懒汉式
+class Single {
+ static getInstance () {
+   if (!Single.instance) {
+     Single.instance = new Single();
+    }
+    return Single.instance;
+  }
+}
+
+const test1 = Single.getInstance();
+const test2 = Single.getInstance();
+
+console.log(test1 === test2); // true
+
+
+```
+
+``` js
+// 饿汉式
+class Single {
+ static instance = new Single();
+
+  static getInstance () {
+    return Single.instance;
+  }
+}
+
+const test1 = Single.getInstance();
+const test2 = Single.getInstance();
+
+console.log(test1 === test2); // true
+
+
+```
+
 单例模式适用性
 -------
 

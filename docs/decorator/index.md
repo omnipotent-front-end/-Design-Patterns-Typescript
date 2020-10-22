@@ -452,5 +452,24 @@ Angular/Nest/Mobx 目前均有装饰器提供的基础用法。
 
 至于如何实现装饰器，可以参考[Javascript | 无所不能的前端--十万个为什么](https://omnipotent-front-end.github.io/language/javascript.html#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0-decorator)
 
+2、高阶组件
 
+在 react 中，高阶组件 (HOC) 也是装饰器模式的一种体现，通常用来**不改变原来组件的情况下添加一些属性，达到组件复用**的功能。
+
+
+``` js
+import React from 'react';
+
+const BgHOC = WrappedComponent => class extends React.Component {
+ render () {
+   return (
+     <div style={{ background: 'blue' }}>
+       <WrappedComponent />
+      </div>
+    );
+  }
+}
+
+
+```
 
