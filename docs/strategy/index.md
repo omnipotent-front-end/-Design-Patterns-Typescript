@@ -325,3 +325,37 @@ export { ShoppingCart, guestStrategy, regularStrategy, premiumStrategy };
 
 应用场景
 -------
+
+### 1.策略类
+
+参考[FunnyLiu/preloader at readsource](https://github.com/FunnyLiu/preloader/tree/readsource#%E8%BF%90%E8%90%A5%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F)。
+
+不同的文件通过不同的loader类来完成预加载的逻辑，各loader共同基于baseloader。
+
+``` js
+var LOADERS = {
+  png: LoaderImage,
+  jpg: LoaderImage,
+  jpeg: LoaderImage,
+  webp: LoaderImage,
+  gif: LoaderImage,
+  json: LoaderJSON,
+  mp4: LoaderVideo,
+  ogg: LoaderVideo,
+  ogv: LoaderVideo,
+  webm: LoaderVideo,
+  mp3: LoaderAudio,
+  wav: LoaderAudio
+};
+```
+
+如果是图片就走图片Loader的逻辑：
+
+``` js
+_createAndLoadImage: function (src) {
+  this.content = new Image();
+  this.content.onload = this._onImageLoadComplete.bind(this);
+  this.content.onerror = this._onImageLoadFail.bind(this);
+  this.content.src = src;
+}
+```
