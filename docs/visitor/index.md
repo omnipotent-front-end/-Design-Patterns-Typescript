@@ -254,6 +254,8 @@ class Application is
 *   你可以同时使用[访问者](https://refactoringguru.cn/design-patterns/visitor)和[迭代器](https://refactoringguru.cn/design-patterns/iterator)来遍历复杂数据结构，并对其中的元素执行所需操作，即使这些元素所属的类完全不同。
     
 
+*   访问者模式和桥接模式有点类似，两者都是为了给对象动态增加新功能。不同点是桥接模式主要用于将对象的抽象部分和实现部分隔离，使得各自承担责任，可独立变化。而访问者模式主要用于为某对象结构中包含的多类对象灵活添加新功能。桥接模式添加的方法彼此不相同，但相关。访问者模式添加的新功能彼此不相同且不相关。如为用户结构下的不同用户对象（超级用户、普通用户）添加打印、扫描方法
+
 
 Typescript实现
 -----
@@ -413,4 +415,81 @@ class Developer extends Employee {
 export { Developer, Manager, bonusVisitor };
 
 ```
+
+
+应用场景
+-----
+
+
+### babel插件中对ast的操作
+
+babel的插件中通过访问者模式对ast进行处理。比如[简单的babel插件示例](https://github.com/FunnyLiu/babelDemo/tree/master/easyPlugin)。
+
+你声明两个简单的插件：
+
+``` js
+module.exports = function testPlugin(babel) {
+    return {
+      visitor: {
+        Identifier(path) {
+        // 将所有的foo改成bar
+          if (path.node.name === 'foo') {
+            path.node.name = 'bar';
+          }
+        }
+      }
+    };
+  };
+```
+
+
+和
+
+``` js
+module.exports = function testPlugin(babel) {
+  return {
+    visitor: {
+      Identifier(path) {
+        // 将所有的foo改成bar
+        if (path.node.name === "bar2") {
+          path.node.name = "bar3";
+        }
+      },
+      //将==变成===
+      BinaryExpression(path) {
+        if (path.node.operator == "==") {
+          path.node.operator = "===";
+        }
+        // ...
+      },
+    },
+  };
+};
+```
+
+再去使用之：
+
+``` js
+const babel = require("@babel/core");
+const plugin = require("./");
+const plugin2 = require("./index2");
+
+var example = `
+var foo = 1;
+if (foo) console.log(foo);
+if(1 == 2){
+    
+}
+var bar2 = 2;
+`;
+const { code } = babel.transform(example, { plugins: [plugin,plugin2] });
+
+console.log(code);
+```
+
+这里的visitor其实就是具体访问者。而在解析AST的过程中，babel会将每一个符合type的语法树node，交给访问者队列来处理。比如Identifier就会顺序交给上面两个插件对应的方法来处理。
+
+最终babel执行visitor方法的源码位于[此处](https://github.com/FunnyLiu/babel/blob/readsource/packages/babel-traverse/src/visitors.js#L222)。
+
+而具体元素则是[@babel/traverse中的context](https://github.com/FunnyLiu/babel/blob/readsource/packages/babel-traverse/src/index.js#L64)及path。
 
