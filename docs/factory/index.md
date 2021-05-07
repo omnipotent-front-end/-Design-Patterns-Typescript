@@ -343,13 +343,50 @@ export default BmwFactory;
 ------
 
 
-### inject库中的解析器工厂
+### 一些基本工厂
 
 选自midway的ioc库之[inject](https://github.com/FunnyLiu/injection/tree/readsource)。
 
 由于这个场景只有一个维度，所以只有具体工厂[managedResolverFactory](https://github.com/FunnyLiu/injection/blob/readsource/src/factory/common/managedResolverFactory.ts#L296)来包装每一种不同的解析器。
 每一个解析器具有product的基类[BaseManagedResolver](https://github.com/FunnyLiu/injection/blob/readsource/src/factory/common/managedResolverFactory.ts#L34)，而抽象product为[IManagedResolver](https://github.com/FunnyLiu/injection/blob/readsource/src/interfaces.ts#L154)。
 该具体工厂对外暴露使用是通过create来完成 , 参见[applicationContext](https://github.com/FunnyLiu/injection/blob/readsource/src/factory/applicationContext.ts#L148)
+
+
+又比如[hard-source-webpack-plugin中的logFactory](https://github.com/FunnyLiu/hard-source-webpack-plugin/blob/readsource/lib/loggerFactory.js#L188)。
+
+LoggerFactory暴露create方法，给compiler挂载new Logger。
+
+
+
+``` js
+// 日志工厂
+class LoggerFactory {
+  constructor(compiler) {
+    this.compiler = compiler;
+
+    pluginCompat.register(compiler, 'hardSourceLog', 'sync', ['data']);
+  }
+
+  /**
+   * @method create
+   * @memberof module:hard-source-webpack-plugin/logger-factory~LoggerFactory#
+   */
+  create() {
+    const compiler = this.compiler;
+    if (!compiler[LOGGER_FACTORY_COMPILER_KEY]) {
+      compiler[LOGGER_FACTORY_COMPILER_KEY] = new Logger(this.compiler);
+    }
+    return compiler[LOGGER_FACTORY_COMPILER_KEY];
+  }
+}
+```
+
+使用工厂[笔记内容](https://github.com/FunnyLiu/hard-source-webpack-plugin/blob/readsource/index.js#L140):
+
+``` js
+//工厂模式
+    const logger = new LoggerFactory(compiler).create();
+```
 
 
 ### react多个组件的组装
