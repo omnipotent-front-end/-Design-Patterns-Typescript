@@ -468,3 +468,27 @@ this.cache = new ExpirationStrategy(new MemoryStorage());
 从而完成整个代理过程。
 
 
+6、增强对象，属性合并
+
+找bridge.a其实就是去找bridge.rnCallNative.a
+
+
+适合于将一个对象上所有东西，挂到另一个对象上往外去暴露
+
+
+``` js
+export const bridge = new Proxy(bridgeBase, {
+  get(obj, prop) {
+    if (prop in obj) {
+      return obj[prop];
+    }
+
+    if (supportBridgeName.indexOf(prop) >= 0) {
+      return (obj.bridge.rnCallNative || f).bind(obj.bridge, prop);
+    }
+
+    return null;
+  },
+});
+```
+
