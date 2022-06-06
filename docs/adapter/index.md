@@ -426,3 +426,37 @@ module.exports = Adapter;
 参考：
 
 [using-the-adapter-design-pattern-with-react](https://sendgrid.com/blog/using-the-adapter-design-pattern-with-react/)
+
+
+5、利用esm特性完成适配器
+
+# 简单适配器，入口注入
+
+
+设置一个普通的引用：
+
+``` js
+let bridge = null;
+
+export const setBridge = bge => {
+  bridge = bge;
+};
+
+export {bridge};
+
+```
+
+在不同的入口或者根据不同的条件，去set不同的内容。
+
+``` js
+import {bridge} from './src/common/bridge/native';
+import {setBridge} from './src/common/bridge';
+
+bridge.init({AudioRecorder, bridge: YktNativeModule, Sound: Sound});
+setBridge(bridge);
+
+
+```
+
+然后直接在内部其他模块使用bridge即可。
+
